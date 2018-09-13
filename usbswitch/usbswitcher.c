@@ -1,3 +1,4 @@
+
 /*
  * usbswitcher.c, by @joystick and @rpaleari
  *
@@ -23,13 +24,15 @@
 
 /* This VID/PID pair is OK for all the Samsung phones we tested. However, you
    may need to tune them for other device models. */
-#define SAMSUNG_VENDOR_ID  	0x04e8
-#define SAMSUNG_PRODUCT_ID 	0x6860
-#define LG_VENDOR_ID		0x1004
-#define LG_PRODUCT_ID		0x633e
-//#define LG_PRODUCT_ID		0x62ce
-#define HTC_VENDOR_ID		0x0bb4
-#define HTC_PRODUCT_ID		0x0f64
+#define SAMSUNG_VENDOR_ID       0x04e8
+#define SAMSUNG_PRODUCT_ID      0x6860
+#define LG_VENDOR_ID            0x1004
+#define LG_PRODUCT_ID           0x633e
+//#define LG_PRODUCT_ID         0x62ce
+#define HTC_VENDOR_ID           0x0bb4
+#define HTC_PRODUCT_ID          0x0f64
+#define HUAWEI_VENDOR_ID        0x12D1
+#define HUAWEI_PRODUCT_ID       0x4607c3b
 
 static int VENDOR_ID;
 static int PRODUCT_ID;
@@ -42,6 +45,7 @@ static void usage(void)
     fprintf(stderr, "\t-s|--Samsung (default)\n");
     fprintf(stderr, "\t-l|--LG\n");
     fprintf(stderr, "\t-h|--HTC\n");
+    fprintf(stderr, "\t-u|--HUAWEI\n");
     fprintf(stderr, "\n");
 }
 
@@ -66,9 +70,9 @@ struct usb_device *find_device() {
     for (dev=bus->devices; dev; dev=dev->next) {
       if ((dev->descriptor.idVendor == VENDOR_ID)) {
 //&&
-//	  (dev->descriptor.idProduct == PRODUCT_ID)) {
-	printf("hello, device found with vendor id\n");
-	return dev;
+//        (dev->descriptor.idProduct == PRODUCT_ID)) {
+        printf("hello, device found with vendor id\n");
+        return dev;
       } else {
         printf("vendor/product id mismatch\n");
       }
@@ -90,24 +94,29 @@ int main(int argc, char **argv) {
   };
 
   /* Process the arguments */
-  while ((c = getopt_long(argc, argv, "slh", long_options, &option_index)) != -1) {
+  while ((c = getopt_long(argc, argv, "slhu", long_options, &option_index)) != -1) {
     switch (c) {
       case 'l':
-	printf("usbswitcher - Info: switching LG phones\n");
-	VENDOR_ID = LG_VENDOR_ID;
-	PRODUCT_ID = LG_PRODUCT_ID;
-	break;
+        printf("usbswitcher - Info: switching LG phones\n");
+        VENDOR_ID = LG_VENDOR_ID;
+        PRODUCT_ID = LG_PRODUCT_ID;
+        break;
       case 'h':
-	printf("usbswitcher - Info: switching HTC phones\n");
-	VENDOR_ID = HTC_VENDOR_ID;
-	PRODUCT_ID = HTC_PRODUCT_ID;
-	break;
+        printf("usbswitcher - Info: switching HTC phones\n");
+        VENDOR_ID = HTC_VENDOR_ID;
+        PRODUCT_ID = HTC_PRODUCT_ID;
+        break;
+      case 'u':
+        printf("usbswitcher - Info: switching HUAWEI phones\n");
+        VENDOR_ID = HUAWEI_VENDOR_ID;
+        PRODUCT_ID = HUAWEI_PRODUCT_ID;
+        break;
       case 's':
       default:
-	printf("usbswitcher - Info: switching Samsung phones\n");
-	VENDOR_ID = SAMSUNG_VENDOR_ID;
-	PRODUCT_ID = SAMSUNG_PRODUCT_ID;
-	break;
+        printf("usbswitcher - Info: switching Samsung phones\n");
+        VENDOR_ID = SAMSUNG_VENDOR_ID;
+        PRODUCT_ID = SAMSUNG_PRODUCT_ID;
+        break;
     }
   }
 
