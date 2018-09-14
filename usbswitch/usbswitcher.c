@@ -1,4 +1,3 @@
-
 /*
  * usbswitcher.c, by @joystick and @rpaleari
  *
@@ -32,7 +31,9 @@
 #define HTC_VENDOR_ID           0x0bb4
 #define HTC_PRODUCT_ID          0x0f64
 #define HUAWEI_VENDOR_ID        0x12D1
-#define HUAWEI_PRODUCT_ID       0x4607c3b
+#define HUAWEI_PRODUCT_ID       0x1052
+#define SHARP_VENDOR_ID         0x04dd
+#define SHARP_PRODUCT_ID        0x990c
 
 static int VENDOR_ID;
 static int PRODUCT_ID;
@@ -41,11 +42,12 @@ extern char *optarg;
 
 static void usage(void)
 {
-    fprintf(stderr, "\tusage: usbswitcher [-slh]\n\n");
+    fprintf(stderr, "\tusage: usbswitcher [-slhur]\n\n");
     fprintf(stderr, "\t-s|--Samsung (default)\n");
     fprintf(stderr, "\t-l|--LG\n");
     fprintf(stderr, "\t-h|--HTC\n");
     fprintf(stderr, "\t-u|--HUAWEI\n");
+    fprintf(stderr, "\t-r|--SHARP\n");
     fprintf(stderr, "\n");
 }
 
@@ -94,7 +96,7 @@ int main(int argc, char **argv) {
   };
 
   /* Process the arguments */
-  while ((c = getopt_long(argc, argv, "slhu", long_options, &option_index)) != -1) {
+  while ((c = getopt_long(argc, argv, "slhur", long_options, &option_index)) != -1) {
     switch (c) {
       case 'l':
         printf("usbswitcher - Info: switching LG phones\n");
@@ -110,6 +112,11 @@ int main(int argc, char **argv) {
         printf("usbswitcher - Info: switching HUAWEI phones\n");
         VENDOR_ID = HUAWEI_VENDOR_ID;
         PRODUCT_ID = HUAWEI_PRODUCT_ID;
+        break;
+      case 'r':
+        printf("usbswitcher - Info: switching SHARP phones\n");
+        VENDOR_ID = SHARP_VENDOR_ID;
+        PRODUCT_ID = SHARP_PRODUCT_ID;
         break;
       case 's':
       default:
